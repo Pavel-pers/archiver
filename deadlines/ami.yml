@@ -4,3 +4,24 @@
   tasks:
     - task: multiplication
       score: 100
+
+- group: 01-intro
+  start: 24-01-2024 10:50
+  deadline: 07-02-2024 23:59
+  tasks:
+    - task: next_even
+      score: 100
+    - task: is_leap
+      score: 100
+    - task: fibonacci
+      score: 100
+    - task: min_divisor
+      score: 100
+    - task: chocolate
+      score: 100
+    - task: reduce_fraction
+      score: 100
+    - task: palindrome
+      score: 200
+    - task: password
+      score: 200

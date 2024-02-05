@@ -22,9 +22,9 @@
       score: 150
 
 
-- group: 01-homework-two
-  start: 26-09-2023 00:00
-  deadline: 11-10-2023 23:59
+- group: 02-homework-two
+  start: 05-02-2024 00:00
+  deadline: 19-02-2024 23:59
   tasks:
     - task: sort_students
       score: 100

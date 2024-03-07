@@ -1,3 +1,10 @@
+- group:    99-project
+  start:    07-03-2023 00:00
+  deadline: 28-03-2023 02:59
+  tasks:
+    - task: image_processor
+      score: 1000
+
 - group: 03-homework-three
   start: 27-02-2024 13:00
   deadline: 12-03-2024 23:59

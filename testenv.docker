@@ -4,3 +4,5 @@ COPY . /opt/shad
 
 RUN find /opt/shad/private -name 'solution' | xargs rm -rf
 RUN find /opt/shad/private -name '*.cpp' -or -name '*.h' | xargs chmod o-rwx
+
+RUN pip3 install pillow

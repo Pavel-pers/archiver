@@ -19,7 +19,7 @@ check-solutions-clang-18:
   extends: .check
   variables:
     CC: clang-18
-    CXX: clang++-14
+    CXX: clang++-18
 
 deploy:
   tags:

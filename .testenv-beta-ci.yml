@@ -15,10 +15,10 @@ stages:
     - cmake ../../ -G Ninja -DTEST_SOLUTION=ON -DENABLE_PRIVATE_TESTS=ON
     - ninja test-all
 
-check-solutions-clang-14:
+check-solutions-clang-18:
   extends: .check
   variables:
-    CC: clang-14
+    CC: clang-18
     CXX: clang++-14
 
 deploy:

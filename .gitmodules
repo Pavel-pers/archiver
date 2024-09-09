@@ -1,6 +1,6 @@
 [submodule "private"]
 	path = private
-	url = ../hse-base-cxx-2024-private.git
+	url = ../hse-base-cpp-private.git
 [submodule "grader"]
 	path = grader
-	url = ../hse-base-cxx-2024-grader.git
+	url = ../hse-base-cpp-grader.git

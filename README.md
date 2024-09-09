@@ -2,7 +2,7 @@
 
 Прочитайте [SETUP.md](SETUP.md) и сдайте первую задачу.
 
-Дедлайны по задачам можно наблюдать на сайте https://base.cpp-hse.net/
+Дедлайны по задачам можно наблюдать на сайте https://pilot.cpp-hse.net/
 
 Стайлгайд описан в [STYLEGUIDE.md](STYLEGUIDE.md).
 

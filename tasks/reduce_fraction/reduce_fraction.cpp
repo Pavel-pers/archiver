@@ -9,6 +9,6 @@ int64_t ReduceFraction(int64_t numerator, int64_t denominator) {
         numerator *= -1, denominator *= -1;
     }
 
-    int64_t overall_coef = std::gcd(abs(numerator), abs(denominator));
+    int64_t overall_coef = std::gcd(std::abs(numerator), std::abs(denominator));
     return (numerator / overall_coef + denominator / overall_coef);
 }

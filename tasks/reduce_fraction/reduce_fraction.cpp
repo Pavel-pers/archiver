@@ -1,5 +1,6 @@
 #include "reduce_fraction.h"
 #include <numeric>
+#include <algorithm>
 #include <cassert>
 
 int64_t ReduceFraction(int64_t numerator, int64_t denominator) {

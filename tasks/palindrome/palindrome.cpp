@@ -2,7 +2,11 @@
 
 const size_t FIRST_STRING_INDEX = 0;
 
-bool IsPalindrome(std::string const& str) {
+bool IsPalindrome(const std::string& str) {
+    if (str.empty()) {
+        return true;
+    }
+
     size_t left_index = FIRST_STRING_INDEX;
     size_t right_index = str.size() - 1;
 

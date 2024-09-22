@@ -3,6 +3,9 @@
 std::vector<std::string> StudentsOrder(const std::vector<StudentAction>& student_actions,
                                        const std::vector<size_t>& queries) {
     size_t student_n = student_actions.size();
+    if (student_n == 0) {
+        return {};
+    }
 
     std::vector<std::string> ordered_students(student_n);
     size_t topside_index = 0;

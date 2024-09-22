@@ -1,4 +1,5 @@
 #include "sort_students.h"
+#include <algorithm>
 
 void SortStudents(std::vector<Student>& students, SortKind const sort_kind) {
     std::sort(students.begin(), students.end(),

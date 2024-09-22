@@ -10,7 +10,7 @@ bool operator<(const Student& lhs, const Student& rhs) {
 }
 
 AdmissionTable FillUniversities(const std::vector<University>& universities, const std::vector<Applicant>& applicants) {
-    std::vector<const Applicant*> ordered_applicants;
+    std::vector<const Applicant*> ordered_applicants;  //? как написать реализацию с вектором сылок?
     for (const Applicant& applicant : applicants) {
         ordered_applicants.emplace_back(&applicant);
     }

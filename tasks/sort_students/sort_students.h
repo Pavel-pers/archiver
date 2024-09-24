@@ -3,22 +3,24 @@
 #include <vector>
 #include <string>
 
-struct Date {
+struct Date
+{
     int day = 0;
     int month = 0;
     int year = 0;
 };
 
-struct Student {
+struct Student
+{
     std::string name;
     std::string last_name;
     Date birth_date;
 };
 
-enum class SortKind {
+enum class SortKind
+{
     Name,
     Date
 };
 
-void SortStudents(std::vector<Student>& students, SortKind sortKind);
-
+void SortStudents(std::vector<Student>& students, SortKind sort_kind);

@@ -1,5 +1,5 @@
 #include "unixpath.h"
-#include <stack>
+#include <vector>
 
 std::string NormalizePath(std::string_view current_working_dir, std::string_view path) {
     std::vector<std::string_view> splited_path;

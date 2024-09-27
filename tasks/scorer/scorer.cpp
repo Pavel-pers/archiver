@@ -2,6 +2,10 @@
 #include <algorithm>
 
 ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
+    if (events.empty()) {
+        return ScoreTable();
+    }
+
     std::vector<const Event*> ordered_events;
     for (const Event& ei : events) {
         ordered_events.push_back(&ei);
@@ -27,10 +31,10 @@ ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
         if (i < ordered_events.size() && ordered_events[i]->time <= score_time) {
             switch (ordered_events[i]->event_type) {
                 case EventType::MergeRequestClosed:
-                    is_closed = false;
+                    is_closed = true;
                     break;
                 case EventType::MergeRequestOpen:
-                    is_closed = true;
+                    is_closed = false;
                     break;
                 case EventType::CheckFailed:
                     is_accepted = false;

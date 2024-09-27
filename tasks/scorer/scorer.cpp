@@ -1,4 +1,5 @@
 #include "scorer.h"
+#include <algorithm>
 
 ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
     std::vector<const Event*> ordered_events;
@@ -6,7 +7,7 @@ ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
         ordered_events.push_back(&ei);
     }
 
-    std::sort(ordered_events.begin(), ordered_events.end(), [](const Event* l, const Event* r) {
+    sort(ordered_events.begin(), ordered_events.end(), [](const Event* l, const Event* r) {
         return std::tie(l->student_name, l->task_name, l->time) < std::tie(r->student_name, r->task_name, r->time);
     });
 

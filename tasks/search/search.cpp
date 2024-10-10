@@ -5,8 +5,8 @@
 
 class WordHash {
 public:
-    uint32_t operator()(const std::string_view s) const {
-        uint32_t hash = 0;
+    __uint32_t operator()(const std::string_view s) const {
+        __uint32_t hash = 0;
         for (char i : s) {
             hash = (static_cast<uint64_t>(hash) * BASE + (tolower(i) - 'a' + 1)) % MOD;
         }
@@ -14,8 +14,8 @@ public:
     }
 
 private:
-    static const uint32_t BASE = 31;
-    static const uint32_t MOD = 1e9 + 7;
+    static const __uint32_t BASE = 31;
+    static const __uint32_t MOD = 1e9 + 7;
 };
 
 const double EPS = 1e-9;

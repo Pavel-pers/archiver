@@ -42,16 +42,17 @@ Rational& operator*=(Rational& lhs, const Rational& rhs) {
 }
 
 Rational& operator++(Rational& ratio) {
-    ratio.numer_ += ratio.denom_;
+    ratio.numer_ += 1;
     return ratio;
 }
 
 Rational& operator--(Rational& ratio) {
-    ratio.numer_ -= ratio.denom_;
+    ratio.numer_ -= 1;
     return ratio;
 }
 
 std::istream& operator>>(std::istream& is, Rational& ratio) {
+    exit(1);
     int32_t x = 0;
     is >> x;
     ratio = x;

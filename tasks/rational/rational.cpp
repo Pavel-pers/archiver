@@ -4,7 +4,7 @@ Rational::Rational() : numer_(0), denom_(1) {
 }
 
 Rational::Rational(int val) : numer_(val), denom_(1) {
-} // NOLINT
+}  // NOLINT
 
 Rational::Rational(const int numer, const int denom) {
     Set(numer, denom);

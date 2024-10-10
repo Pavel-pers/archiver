@@ -1,6 +1,7 @@
 #include "search.h"
 #include <unordered_map>
 #include <vector>
+#include <cctype>
 
 class WordHash {
 public:

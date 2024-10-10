@@ -149,7 +149,7 @@ void Rational::Set(int64_t numer, int64_t denom) {
     }
 
     int64_t com_val = std::gcd(numer, denom);
-    if (numer < 0) {
+    if (denom < 0) {
         com_val = -com_val;
     }
 

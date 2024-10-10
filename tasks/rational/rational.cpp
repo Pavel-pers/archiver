@@ -139,7 +139,11 @@ bool operator!=(const Rational& lhs, const Rational& rhs) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Rational& ratio) {
-    os << static_cast<double>(ratio.GetNumerator()) / static_cast<double>(ratio.GetDenominator());
+    os << ratio.GetNumerator();
+    if (ratio.GetDenominator() != 1) {
+        os << '/' << ratio.GetDenominator();
+    }
+
     return os;
 }
 

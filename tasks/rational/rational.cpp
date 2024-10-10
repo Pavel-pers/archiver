@@ -67,9 +67,6 @@ Rational operator-(const Rational& ratio) {
 }
 
 Rational operator~(const Rational& ratio) {
-    if (ratio.GetNumerator() == 0) {
-        throw RationalDivisionByZero();
-    }
     return Rational(ratio.GetDenominator(), ratio.GetNumerator());
 }
 
@@ -147,6 +144,10 @@ std::ostream& operator<<(std::ostream& os, const Rational& ratio) {
 }
 
 void Rational::Set(int64_t numer, int64_t denom) {
+    if (denom == 0) {
+        throw RationalDivisionByZero();
+    }
+
     int64_t com_val = std::gcd(numer, denom);
     if (numer < 0) {
         com_val = -com_val;

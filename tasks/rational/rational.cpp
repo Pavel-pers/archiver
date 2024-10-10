@@ -99,14 +99,14 @@ Rational operator/(const Rational& lhs, const Rational& rhs) {
 }
 
 Rational operator++(Rational& ratio, int) {
-    Rational res = ratio;
-    ++res;
+    const Rational res = ratio;
+    ++ratio;
     return res;
 }
 
 Rational operator--(Rational& ratio, int) {
-    Rational res = ratio;
-    --res;
+    const Rational res = ratio;
+    --ratio;
     return res;
 }
 

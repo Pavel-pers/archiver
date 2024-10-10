@@ -1,6 +1,7 @@
 #include "search.h"
 #include <unordered_map>
 #include <vector>
+#include <algorithm>
 #include <cctype>
 
 class WordHash {
@@ -18,7 +19,7 @@ private:
     static const __uint32_t MOD = 1e9 + 7;
 };
 
-const double EPS = 1e-9;
+const double EPS = 1e-7;
 
 std::vector<std::string_view> Search(std::string_view text, std::string_view query, size_t results_count) {
     std::unordered_map<std::string_view, std::vector<std::pair<size_t, size_t>>, WordHash> matches_str;
@@ -71,17 +72,17 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             continue;
         }
 
-        double cur_idf = log(static_cast<double>(ordered_str.size()) / static_cast<double>(matches.size()));
+        double cur_idf = std::log(static_cast<double>(ordered_str.size()) / static_cast<double>(matches.size()));
         for (auto [str_indx, cur_word_cnt] : matches) {
             double cur_tf = static_cast<double>(cur_word_cnt) / static_cast<double>(count_of_words[str_indx]);
             ordered_str[str_indx].first = std::max(ordered_str[str_indx].first, cur_idf * cur_tf);
         }
     }
 
-    std::sort(ordered_str.rbegin(), ordered_str.rend(),
-              [](std::pair<double, std::string_view> lhs, std::pair<double, std::string_view> rhs) {
-                  return rhs.first - lhs.first > EPS;
-              });
+    sort(ordered_str.rbegin(), ordered_str.rend(),
+         [](std::pair<double, std::string_view> lhs, std::pair<double, std::string_view> rhs) {
+             return rhs.first - lhs.first > EPS;
+         });
 
     std::vector<std::string_view> top_k;
     for (auto [tf_idf, str] : ordered_str) {

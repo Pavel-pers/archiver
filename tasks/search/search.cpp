@@ -1,15 +1,16 @@
 #include "search.h"
-#include <unordered_map>
-#include <vector>
 #include <algorithm>
 #include <cctype>
+#include <cmath>
+#include <unordered_map>
+#include <vector>
 
 class WordHash {
 public:
     __uint32_t operator()(const std::string_view s) const {
         __uint32_t hash = 0;
         for (char i : s) {
-            hash = (static_cast<uint64_t>(hash) * BASE + (tolower(i) - 'a' + 1)) % MOD;
+            hash = (static_cast<__uint64_t>(hash) * BASE + (tolower(i) - 'a' + 1)) % MOD;
         }
         return hash;
     }
@@ -80,7 +81,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     }
 
     sort(ordered_str.rbegin(), ordered_str.rend(),
-         [](std::pair<double, std::string_view> lhs, std::pair<double, std::string_view> rhs) {
+         [](std::pair<double, std::string_view> const& lhs, std::pair<double, std::string_view> const& rhs) {
              return rhs.first - lhs.first > EPS;
          });
 

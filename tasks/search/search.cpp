@@ -23,6 +23,10 @@ private:
 const double EPS = 1e-7;
 
 std::vector<std::string_view> Search(std::string_view text, std::string_view query, size_t results_count) {
+    if (text.empty() || query.empty()) {
+        return {};
+    }
+
     std::unordered_map<std::string_view, std::vector<std::pair<size_t, size_t>>, WordHash> matches_str;
     for (size_t start_indx = 0; start_indx < query.size(); ++start_indx) {
         for (size_t len = 0;; ++len) {

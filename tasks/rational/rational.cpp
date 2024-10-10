@@ -52,9 +52,20 @@ Rational& operator--(Rational& ratio) {
 }
 
 std::istream& operator>>(std::istream& is, Rational& ratio) {
-    int32_t x = 0;
-    is >> x;
-    ratio = x;
+    int32_t numer = 0;
+    int32_t denom = 1;
+    is >> numer;
+
+    char c = 0;
+    if (is >> c) {
+        if (c == '/') {
+            is >> denom;
+        } else {
+            is.unget();
+        }
+    }
+
+    ratio = Rational(numer, denom);
     return is;
 }
 

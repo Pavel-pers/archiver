@@ -1,5 +1,4 @@
 #include "provinces.h"
-#include <cctype>
 
 __int64_t CountPassports(const std::vector<int>& provinces) {
     std::multiset<__int64_t> ord;

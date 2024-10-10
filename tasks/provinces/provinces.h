@@ -1,4 +1,5 @@
 #include <set>
 #include <vector>
+#include <cctype>
 
-int64_t CountPassports(const std::vector<int>& provinces);
+__int64_t CountPassports(const std::vector<int>& provinces);

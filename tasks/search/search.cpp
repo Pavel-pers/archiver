@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <vector>
 
+const double EPS = 1e-7;
+
 class WordHash {
 public:
     __uint32_t operator()(const std::string_view s) const {
@@ -20,14 +22,25 @@ private:
     static const __uint32_t MOD = 1e9 + 7;
 };
 
-const double EPS = 1e-7;
+class EqToIgrnoringCase {
+public:
+    bool operator()(const std::string_view lhs, const std::string_view rhs) const {
+        for (int i = 0; i < std::min(lhs.size(), rhs.size()); i++) {
+            if (tolower(lhs[i]) != tolower(rhs[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
 
 std::vector<std::string_view> Search(std::string_view text, std::string_view query, size_t results_count) {
     if (text.empty() || query.empty()) {
         return {};
     }
 
-    std::unordered_map<std::string_view, std::vector<std::pair<size_t, size_t>>, WordHash> matches_str;
+    std::unordered_map<std::string_view, std::vector<std::pair<size_t, size_t>>, WordHash, EqToIgrnoringCase>
+        matches_str;
     for (size_t start_indx = 0; start_indx < query.size(); ++start_indx) {
         for (size_t len = 0;; ++len) {
             if (len + start_indx == query.size() || !std::isalpha(query[start_indx + len])) {

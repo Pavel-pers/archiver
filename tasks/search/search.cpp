@@ -111,12 +111,12 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     std::sort(ordered_indx.begin(), ordered_indx.end(),
               [&tf_idf](size_t lhs, size_t rhs) { return tf_idf[lhs] > tf_idf[rhs]; });
 
-    std::vector<std::string_view> result(results_count);
+    std::vector<std::string_view> result;
     for (size_t i = 0; i < results_count; i++) {
         if (tf_idf[ordered_indx[i]] < EPS) {
             break;
         }
-        result[i] = splited_str[ordered_indx[i]];
+        result.push_back(splited_str[ordered_indx[i]]);
     }
 
     return result;

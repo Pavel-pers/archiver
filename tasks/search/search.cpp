@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <numeric>
 #include <cctype>
+#include <cstdint>
 #include <cmath>
 #include <unordered_map>
 #include <vector>
@@ -10,19 +11,18 @@ const double EPS = 1e-7;
 
 class HashWord {
 public:
-    std::uint32_t operator()(const std::string_view s) const {
-        std::uint32_t result_hash = 0;
+    uint32_t operator()(const std::string_view s) const {
+        uint32_t result_hash = 0;
         for (char c : s) {
             c = static_cast<char>(tolower(c));
-            result_hash =
-                (static_cast<std::uint64_t>(BASE) * static_cast<std::uint64_t>(result_hash) + (c - 'a')) % MOD;
+            result_hash = (static_cast<uint64_t>(BASE) * static_cast<uint64_t>(result_hash) + (c - 'a')) % MOD;
         }
         return result_hash;
     }
 
 private:
-    static const std::uint32_t MOD = 1e9 + 7;
-    static const std::uint32_t BASE = 31;
+    static const uint32_t MOD = 1e9 + 7;
+    static const uint32_t BASE = 31;
 };
 
 class CompareWord {

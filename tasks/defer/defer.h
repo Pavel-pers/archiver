@@ -3,7 +3,7 @@
 template <typename Lambda>
 class DeferredFunction {
 public:
-    DeferredFunction(Lambda callback) : callback_(callback) {
+    DeferredFunction(Lambda callback) : callback_(callback) {  // NOLINT
     }
 
     ~DeferredFunction() {

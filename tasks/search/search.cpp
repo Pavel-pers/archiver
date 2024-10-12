@@ -108,8 +108,9 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
 
     std::vector<size_t> ordered_indx(splited_str.size());
     std::iota(ordered_indx.begin(), ordered_indx.end(), 0);
-    std::sort(ordered_indx.begin(), ordered_indx.end(),
-              [&tf_idf](size_t lhs, size_t rhs) { return tf_idf[lhs] > tf_idf[rhs]; });
+    std::sort(ordered_indx.begin(), ordered_indx.end(), [&tf_idf](size_t lhs, size_t rhs) {
+        return tf_idf[lhs] > tf_idf[rhs] || (tf_idf[lhs] == tf_idf[rhs] && lhs < rhs);
+    });
 
     std::vector<std::string_view> result;
     for (size_t i = 0; i < results_count; i++) {

@@ -2,34 +2,43 @@
 #include "cstring"
 #include <vector>
 
-enum class LaunchFlag{
-    COMPRESS,
-    DECOMPRESS,
-    HELP
+namespace args {
+    enum class LaunchFlag {
+        COMPRESS,
+        DECOMPRESS,
+        HELP
+    };
+}
+
+struct CompressParams {
+    const char *archive_name;
+    const std::vector<const char *> files;
+
+    explicit CompressParams(const char *, const std::vector<const char *>);
 };
 
-struct CompressParams{
-    const char* archive_name;
-    const std::vector<const char*> files;
-    explicit CompressParams(const char*, const std::vector<const char*>);
-};
+struct DecompressParams {
+    const char *archive_name;
 
-struct DecompressParams{
-    const char* archive_name;
-    explicit DecompressParams(const char*);
+    explicit DecompressParams(const char *);
 };
 
 
-class ArchiverArgs: private LaunchArgs{
+class ArchiverArgs : private LaunchArgs {
 public:
-    ArchiverArgs(const int, const char**);
-    CompressParams GetCompressParams() const;
-    DecompressParams GetDecompressParams() const;
-private:
-    void CompressHandler(const std::vector<const char*>& params);
-    void DecompressHandler(const std::vector<const char*>& params);
-    void HelpHandler(const std::vector<const char*>& params);
+    ArchiverArgs(const int, const char **);
 
-    LaunchFlag launch_flag_;
-    std::vector<const char*> opt_info_;
+    CompressParams GetCompressParams() const;
+
+    DecompressParams GetDecompressParams() const;
+
+private:
+    void CompressHandler(const std::vector<const char *> &params);
+
+    void DecompressHandler(const std::vector<const char *> &params);
+
+    void HelpHandler(const std::vector<const char *> &params);
+
+    args::LaunchFlag launch_flag_;
+    std::vector<const char *> opt_info_;
 };

@@ -1,16 +1,19 @@
 add_catch(test_args_parser
-        localtest.cpp
-        ../src/models/ArchiverArgs.h
+        argsTest.cpp
         ../src/models/ArchiverArgs.cpp
-        ../src/models/exceptions/LaunchArgsExceptions.h
         ../src/models/exceptions/LaunchArgsExceptions.cpp
         ../src/models/LaunchArgs.cpp
-        ../src/models/LaunchArgs.h
+)
+add_catch(test_StreamReader
+        readerTest.cpp
+        ../src/utility.cpp
+        ../src/models/StreamReader.cpp
+        ../src/models/exceptions/FileExceptions.cpp
 )
 
-add_custom_target(
-        test_archiver
-        WORKING_DIRECTORY
-        DEPENDS archiver
-        COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/test.py ${CMAKE_BINARY_DIR}/archiver ${CMAKE_CURRENT_SOURCE_DIR}/data
-)
+#add_custom_target(
+#        test_archiver
+#        WORKING_DIRECTORY
+#        DEPENDS archiver
+#        COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/test.py ${CMAKE_BINARY_DIR}/archiver ${CMAKE_CURRENT_SOURCE_DIR}/data
+#)

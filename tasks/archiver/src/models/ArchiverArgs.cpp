@@ -15,7 +15,7 @@ void ArchiverArgs::CompressHandler(const std::vector<const char *> &params) {
         throw ArgsRuntimeException("expected file to compress got 1 paramets");
     }
 
-    launch_flag_ = LaunchFlag::COMPRESS;
+    launch_flag_ = args::LaunchFlag::COMPRESS;
     opt_info_ = params;
 }
 
@@ -27,7 +27,7 @@ void ArchiverArgs::DecompressHandler(const std::vector<const char *> &params) {
         throw ArgsRuntimeException("unexpected parameter", params[1]);
     }
 
-    launch_flag_ = LaunchFlag::DECOMPRESS;
+    launch_flag_ = args::LaunchFlag::DECOMPRESS;
     opt_info_ = params;
 }
 
@@ -35,7 +35,7 @@ void ArchiverArgs::HelpHandler(const std::vector<const char *> &params) {
     if (!params.empty()) {
         throw ArgsRuntimeException("unexpected parameter", params[0]);
     }
-    launch_flag_ = LaunchFlag::HELP;
+    launch_flag_ = args::LaunchFlag::HELP;
 }
 
 
@@ -66,7 +66,7 @@ ArchiverArgs::ArchiverArgs(const int argc, const char **argv) : LaunchArgs(argc,
 }
 
 DecompressParams ArchiverArgs::GetDecompressParams() const {
-    if (launch_flag_ != LaunchFlag::DECOMPRESS) {
+    if (launch_flag_ != args::LaunchFlag::DECOMPRESS) {
         throw ArgsLogicException("unexpected use decompress getter");
     }
 
@@ -74,10 +74,9 @@ DecompressParams ArchiverArgs::GetDecompressParams() const {
 }
 
 CompressParams ArchiverArgs::GetCompressParams() const {
-    if (launch_flag_ != LaunchFlag::COMPRESS) {
+    if (launch_flag_ != args::LaunchFlag::COMPRESS) {
         throw ArgsLogicException("unexpected use compress getter");
     }
-    std::cerr << "aa";
 
     const char *file_name = opt_info_[0];
     auto files_to_compress = std::vector<const char *>(opt_info_.begin() + 1, opt_info_.end());

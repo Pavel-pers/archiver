@@ -8,4 +8,10 @@ add_executable(
         models/exceptions/LaunchArgsExceptions.cpp
         models/LaunchArgs.cpp
         models/LaunchArgs.h
+        models/StreamReader.cpp
+        models/StreamReader.h
+        models/exceptions/FileExceptions.cpp
+        models/exceptions/FileExceptions.h
+        utility.cpp
+        utility.h
 )

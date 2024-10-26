@@ -4,12 +4,12 @@
 
 class ArgsLogicException: public std::logic_error {
 public:
-    explicit ArgsLogicException(const std::string& message);
+    explicit ArgsLogicException(const char* message);
 };
 
 class ArgsRuntimeException: public std::runtime_error {
 public:
-    explicit ArgsRuntimeException(const std::string& message, const std::string& invalid_arg = "");
+    explicit ArgsRuntimeException(const char* message, const char* invalid_arg = "");
 };
 
 

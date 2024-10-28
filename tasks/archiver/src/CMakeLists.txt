@@ -14,4 +14,8 @@ add_executable(
         models/exceptions/FileExceptions.h
         utility.cpp
         utility.h
+        models/StreamWriter.cpp
+        models/StreamWriter.h
+        models/StreamWriter.cpp
+        ../tests/writerTest.cpp
 )

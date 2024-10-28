@@ -6,7 +6,7 @@ public:
     explicit FileException(const char* message, const char *file_name = "");
 
     const char* what() const noexcept override;
-    const char *getFile();
+    const char *GetFile();
     void AddNoteFile(const char *file_name);
 
 protected:
@@ -14,13 +14,13 @@ protected:
     const char *file_name_;
 };
 
-class FileReaderException: public FileException {
+
+class FileBrokenException: public FileException {
 public:
-    explicit FileReaderException(const char* message, const char *file_name = "");
+    explicit FileBrokenException(const char* file_name = "");
 };
 
-class FileWriterException: public FileException {
+class FileFormatException: public FileException {
 public:
-    explicit FileWriterException(const char* message, const char *file_name = "");
+    explicit FileFormatException(const char* file_name = "");
 };
-

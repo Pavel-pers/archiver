@@ -10,6 +10,12 @@ add_catch(test_StreamReader
         ../src/models/StreamReader.cpp
         ../src/models/exceptions/FileExceptions.cpp
 )
+add_catch(test_StreamWriter
+        writerTest.cpp
+        ../src/utility.cpp
+        ../src/models/StreamWriter.cpp
+        ../src/models/exceptions/FileExceptions.cpp
+)
 
 #add_custom_target(
 #        test_archiver

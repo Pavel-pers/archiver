@@ -2,21 +2,21 @@
 #include "exceptions/FileExceptions.h"
 #include "../utility.h"
 
-StreamReader::StreamReader(std::istream &in) : in_(in), bit_index_(0) {
+StreamReader::StreamReader(std::istream &in) : in_stream_(in), bit_index_(0) {
     FlushBuffer();
 }
 
 void StreamReader::FlushBuffer() {
-    if (in_.bad()) {
-        throw FileReaderException("file permition denied");
+    if (in_stream_.bad()) {
+        throw FileBrokenException();
     }
-    if (in_.fail() && !in_.eof()) {
-        throw FileReaderException("incorrect file format");
+    if (in_stream_.fail() && !in_stream_.eof()) {
+        throw FileFormatException();
     }
 
     std::fill(buffer_, buffer_ + MAX_BUFFER_SIZE, 0);
-    in_.read(buffer_, MAX_BUFFER_SIZE);
-    last_byte_readed_ = in_.gcount();
+    in_stream_.read(buffer_, MAX_BUFFER_SIZE);
+    last_byte_readed_ = in_stream_.gcount();
     for (char &ci: buffer_) { // reformat to Little-Endian
         ci = utility_bit::ReverseChar(ci);
     }
@@ -24,15 +24,15 @@ void StreamReader::FlushBuffer() {
 }
 
 uint8_t StreamReader::GetFromFirstBlock(uint8_t n) {
-    uint8_t index_in_block = bit_index_ & (CHAR_BIT - 1);
-    if (n > CHAR_BIT - index_in_block) {
+    BlockSizeT index_in_stream_block = bit_index_ & (CHAR_BIT - 1);
+    if (n > CHAR_BIT - index_in_stream_block) {
         throw std::logic_error("count of requested bits exceed first block len");
     }
     if (bit_index_ == MAX_BUFFER_SIZE * CHAR_BIT) { // if the end reached
         FlushBuffer();
     }
 
-    uint8_t res = (buffer_[bit_index_ / CHAR_BIT] >> index_in_block) & ((1 << n) - 1);
+    uint8_t res = (buffer_[bit_index_ / CHAR_BIT] >> index_in_stream_block) & ((1 << n) - 1);
     bit_index_ += n;
     return res;
 }
@@ -42,7 +42,7 @@ uint8_t StreamReader::ReadByte(size_t count_of_bits) {
         throw std::logic_error("count of bits must be less or equal 8");
     }
 
-    uint8_t prefix_size = CHAR_BIT - (bit_index_ & (CHAR_BIT - 1));
+    BlockSizeT prefix_size = CHAR_BIT - (bit_index_ & (CHAR_BIT - 1));
     if (count_of_bits <= prefix_size) {
         return GetFromFirstBlock(count_of_bits);
     }
@@ -65,5 +65,5 @@ uint16_t StreamReader::Read2Bytes(size_t count_of_bits) {
 }
 
 bool StreamReader::Eof() {
-    return bit_index_ >= last_byte_readed_ * CHAR_BIT && in_.eof();
+    return bit_index_ >= last_byte_readed_ * CHAR_BIT && in_stream_.eof();
 }

@@ -17,7 +17,7 @@ void FileException::AddNoteFile(const char *file_name) {
 // TODO file name should included in what
 // TODO dont forget about adding notes
 
-FileBrokenException::FileBrokenException(const char *file_name) : FileException("Unable to access file", file_name) {}
+FilePermitionException::FilePermitionException(const char *file_name) : FileException("Unable to access file", file_name) {}
 
 FileFormatException::FileFormatException(const char *file_name) : FileException("Could't read the file current format",
                                                                                 file_name) {}

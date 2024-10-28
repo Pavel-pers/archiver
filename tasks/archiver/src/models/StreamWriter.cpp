@@ -15,7 +15,7 @@ void StreamWriter::Flush(size_t size) {
         throw FileFormatException();
     }
     if (out_stream_.bad()) {
-        throw FileBrokenException();
+        throw FilePermitionException();
     }
 }
 

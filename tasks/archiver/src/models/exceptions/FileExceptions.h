@@ -1,5 +1,4 @@
 #include <exception>
-#include <string>
 
 class FileException : public std::exception {
 public:
@@ -15,9 +14,9 @@ protected:
 };
 
 
-class FileBrokenException: public FileException {
+class FilePermitionException: public FileException {
 public:
-    explicit FileBrokenException(const char* file_name = "");
+    explicit FilePermitionException(const char* file_name = "");
 };
 
 class FileFormatException: public FileException {

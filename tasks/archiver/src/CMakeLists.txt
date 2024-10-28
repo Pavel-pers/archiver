@@ -18,4 +18,7 @@ add_executable(
         models/StreamWriter.h
         models/StreamWriter.cpp
         ../tests/writerTest.cpp
+        models/Treap.cpp
+        models/Treap.h
+        ../tests/treapTest.cpp
 )

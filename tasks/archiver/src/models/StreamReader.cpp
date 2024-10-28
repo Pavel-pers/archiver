@@ -8,7 +8,7 @@ StreamReader::StreamReader(std::istream &in) : in_stream_(in), bit_index_(0) {
 
 void StreamReader::FlushBuffer() {
     if (in_stream_.bad()) {
-        throw FileBrokenException();
+        throw FilePermitionException();
     }
     if (in_stream_.fail() && !in_stream_.eof()) {
         throw FileFormatException();

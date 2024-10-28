@@ -16,6 +16,11 @@ add_catch(test_StreamWriter
         ../src/models/StreamWriter.cpp
         ../src/models/exceptions/FileExceptions.cpp
 )
+add_catch(test_Treap
+        treapTest.cpp
+        ../src/utility.cpp
+        ../src/models/Treap.cpp
+)
 
 #add_custom_target(
 #        test_archiver

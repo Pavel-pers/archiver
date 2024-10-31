@@ -5,10 +5,6 @@
 #include "utility.h"
 #include <array>
 
-namespace file_serving {
-    void CalculateFrequancy(StreamReader &reader, utility_types::ByteFrequancy &frequancy);
-}
-
 class Encoder {
 public:
     Encoder(const utility_types::ByteMappingTable &mapping_table, StreamWriter &archive_writer);

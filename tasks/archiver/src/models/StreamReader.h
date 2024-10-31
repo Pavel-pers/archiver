@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstdint>
 #include <stdexcept>
+#include "../utility.h"
 
 class StreamReader {
 public:
@@ -20,4 +21,11 @@ private:
 
     void FlushBuffer();
     uint8_t GetFromFirstBlock(uint8_t n);
+};
+
+class FilesByteFrequancy {
+    void ScanFile(StreamReader& reader);
+    utility_types::ByteFrequancy GetSummaryFrequancy() const;
+private:
+    utility_types::ByteFrequancy frequancy_;
 };

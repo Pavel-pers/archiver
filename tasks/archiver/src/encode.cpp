@@ -4,14 +4,6 @@ using utility_types::ByteFrequancy, utility_types::ByteMappingTable, utility_typ
 using utility_types::VariableLenghCode;
 using utility_types::MappingTableInfo;
 
-namespace file_serving {
-    void CalculateFrequancy(StreamReader &reader, ByteFrequancy &frequancy) {
-        while (!reader.Eof()) {
-            frequancy[reader.ReadByte()]++;
-        }
-    }
-}
-
 Encoder::Encoder(const ByteMappingTable &mapping_table, StreamWriter &archive_writer) :
         mapping_table_(mapping_table), writer_(archive_writer), already_print_any_file_(false) {
     PrintArchiveHeader();

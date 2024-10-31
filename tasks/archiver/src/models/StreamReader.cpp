@@ -1,6 +1,5 @@
 #include "StreamReader.h"
 #include "exceptions/FileExceptions.h"
-#include "../utility.h"
 
 StreamReader::StreamReader(std::istream &in) : in_stream_(in), bit_index_(0) {
     FlushBuffer();
@@ -66,4 +65,15 @@ uint16_t StreamReader::Read2Bytes(size_t count_of_bits) {
 
 bool StreamReader::Eof() {
     return bit_index_ >= last_byte_readed_ * CHAR_BIT && in_stream_.eof();
+}
+
+
+void FilesByteFrequancy::ScanFile(StreamReader &reader) {
+    while (!reader.Eof()) {
+        frequancy_[reader.ReadByte()]++;
+    }
+}
+
+utility_types::ByteFrequancy FilesByteFrequancy::GetSummaryFrequancy() const {
+    return frequancy_;
 }

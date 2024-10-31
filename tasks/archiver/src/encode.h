@@ -14,10 +14,6 @@ public:
     void PrintFile(char *file_name, StreamReader &file_reader);
 
 private:
-    static const size_t BITS_IN_SYMBOL_COUNT = 9;
-    static const size_t BITS_IN_LENGH_COUNT = 9;
-    static const size_t BITS_IN_PADDED_BYTE = 9;
-
     const utility_types::ByteMappingTable &mapping_table_;
     StreamWriter &writer_;
     bool already_print_any_file_;

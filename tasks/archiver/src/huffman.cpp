@@ -6,6 +6,25 @@ using utility_types::VariableLenghCode;
 using utility_types::MappingTableInfo;
 
 namespace huffman {
+    namespace canonical_operations {
+        bool CanonicalCompare(utility_types::VariableLenghCode lhs, utility_types::VariableLenghCode rhs) {
+            return std::tie(lhs.lengh, lhs.code) < std::tie(rhs.lengh, rhs.code);
+        }
+
+        void CanonicalIncrement(VariableLenghCode &x) {
+            for (size_t bi = x.lengh - 1;; bi--) {
+                x.code ^= (1 << bi);
+                if (x.code & (1 << bi)) {
+                    break;
+                }
+            }
+        };
+
+        void CanonicalWidening(utility_types::VariableLenghCode &x) {
+            x.lengh++;
+        }
+    }
+
     bool operator>(PriorityNode lhs, PriorityNode rhs) {
         return lhs.total_count > rhs.total_count ||
                (lhs.total_count == rhs.total_count && lhs.node->GetValue() > lhs.node->GetValue());
@@ -32,36 +51,22 @@ namespace huffman {
         return Treap(node_queue.top().node);
     }
 
-    bool CanonicalCompare(utility_types::VariableLenghCode lhs, utility_types::VariableLenghCode rhs) {
-        return std::tie(lhs.lengh, lhs.code) < std::tie(rhs.lengh, rhs.code);
-    }
-
-    VariableLenghCode CanonicalIncrement(VariableLenghCode x) {
-        for (size_t bi = x.lengh - 1;; bi--) {
-            x.code ^= (1 << bi);
-            if (x.code & (1 << bi)) {
-                break;
-            }
-        }
-        return x;
-    };
-
     void RefactorToCanonical(ByteMappingTable &mapping_table) {
-        std::vector<size_t> ord_code_indexes = GetIndexOrderByCanonical(mapping_table);
+        std::vector<PaddedByte> ord_code_indexes = GetIndexOrderByCanonical(mapping_table);
 
         VariableLenghCode canonical_val(0, 0);
         for (size_t i: ord_code_indexes) {
             while (canonical_val.lengh < mapping_table[i].lengh) {
-                canonical_val.lengh++;
+                canonical_operations::CanonicalWidening(canonical_val);
             }
 
             mapping_table[i] = canonical_val;
-            canonical_val = CanonicalIncrement(canonical_val);
+            canonical_operations::CanonicalIncrement(canonical_val);
         }
     }
 
-    std::vector<size_t> GetIndexOrderByCanonical(const ByteMappingTable &map_table) {
-        std::vector<size_t> ordered_indexes;
+    std::vector<PaddedByte> GetIndexOrderByCanonical(const ByteMappingTable &map_table) {
+        std::vector<PaddedByte> ordered_indexes;
         for (size_t i = 0; i < map_table.size(); i++) {
             if (map_table[i].lengh > 0) { // skip non set values
                 ordered_indexes.push_back(i);
@@ -69,9 +74,28 @@ namespace huffman {
         }
 
         std::sort(ordered_indexes.begin(), ordered_indexes.end(), [&map_table](size_t lhs, size_t rhs) {
-            return CanonicalCompare(map_table[lhs], map_table[rhs]);
+            return canonical_operations::CanonicalCompare(map_table[lhs], map_table[rhs]);
         });
 
         return ordered_indexes;
+    }
+
+    void RestoreTreapByInfo(
+            const MappingTableInfo &info, const std::vector<PaddedByte> &canonical_ordered_bytes, Treap& restore_to) {
+
+        size_t nodes_from_cur_lengh = 0;
+        VariableLenghCode canonical_val(0, 0);
+        for (PaddedByte cur_byte: canonical_ordered_bytes) {
+            while (info.lengh_count[canonical_val.lengh] == nodes_from_cur_lengh) {
+                nodes_from_cur_lengh = 0;
+                canonical_operations::CanonicalWidening(canonical_val);
+            }
+
+            restore_to.AddWord(canonical_val, cur_byte);
+            nodes_from_cur_lengh++;
+            if (cur_byte != canonical_ordered_bytes.back()) {
+                canonical_operations::CanonicalIncrement(canonical_val);
+            }
+        }
     }
 }

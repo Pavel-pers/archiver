@@ -34,7 +34,8 @@ void TreapNode::SetChild(bool bit, TreapNode *child) {
 }
 
 
-TreapAutomata::TreapAutomata(TreapNode *root) : start_point_(root), cur_point_(root) {}
+TreapAutomata::TreapAutomata(TreapNode *root, std::vector<PaddedByte> pending_bytes) :
+        start_point_(root), cur_point_(root), pending_bytes_(pending_bytes), found_peding_byte_(false) {}
 
 bool TreapAutomata::InTerminalPoint() const {
     return cur_point_->IsLeaf();
@@ -42,7 +43,7 @@ bool TreapAutomata::InTerminalPoint() const {
 
 bool TreapAutomata::Feed(uint16_t chank, std::queue<PaddedByte> &buffer) {
     for (uint8_t i = sizeof(uint16_t) * CHAR_BIT; i--;) {
-        if (cur_point_->GetChild(chank & 1) == nullptr) {
+        if (cur_point_->GetChild(chank & 1) == nullptr) { // if chank is broken
             return false;
         }
         cur_point_ = cur_point_->GetChild(chank & 1);
@@ -51,13 +52,22 @@ bool TreapAutomata::Feed(uint16_t chank, std::queue<PaddedByte> &buffer) {
             PaddedByte found_value = cur_point_->GetValue();
             cur_point_ = start_point_;
             buffer.push(found_value);
+            if (std::find(pending_bytes_.begin(), pending_bytes_.end(), found_value) != pending_bytes_.end()) {
+                found_peding_byte_ = true; // found byte I'm waiting for
+            }
         }
     }
     return true;
 }
 
+TreapAutomata::operator bool() const {
+    return found_peding_byte_;
+}
+
 
 Treap::Treap(TreapNode *root) : root_(root) {}
+
+Treap::Treap(): root_(new TreapNode(std::numeric_limits<PaddedByte>::max())) {}
 
 Treap::Treap(std::vector<std::pair<VariableLenghCode, PaddedByte>> code_to_word_mapping) :
         root_(new TreapNode(std::numeric_limits<PaddedByte>::max())) {
@@ -81,8 +91,8 @@ ByteMappingTable Treap::GetMappingTable() const {
     return mapping_table;
 }
 
-TreapAutomata Treap::BuildAutomata() {
-    return TreapAutomata(root_);
+TreapAutomata Treap::BuildAutomata(std::vector<PaddedByte> last_byte_pending) {
+    return TreapAutomata(root_, last_byte_pending);
 }
 
 
@@ -121,12 +131,8 @@ namespace treap_utility {
             FillTableOnSubtreap(root_of_subtreap->GetChild(LEFT_NODE_CHILD), table, next_code);
         }
         if (root_of_subtreap->GetChild(RIGHT_NODE_CHILD)) {
-            VariableLenghCode   next_code(scrached_word.code | (1 << scrached_word.lengh), scrached_word.lengh + 1);
+            VariableLenghCode next_code(scrached_word.code | (1 << scrached_word.lengh), scrached_word.lengh + 1);
             FillTableOnSubtreap(root_of_subtreap->GetChild(RIGHT_NODE_CHILD), table, next_code);
         }
     }
-}
-
-const char *treap_exceptions::InvalidPathException::what() const noexcept {
-    return "Invalid bit given, couldnt get this node";
 }

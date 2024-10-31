@@ -51,4 +51,8 @@ namespace utility_bit {
 
         return info;
     }
+
+    bool IsSpecialSymbol(utility_types::PaddedByte symb) {
+        return symb > std::numeric_limits<uint8_t>::max();
+    }
 }

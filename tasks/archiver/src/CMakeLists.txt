@@ -27,6 +27,6 @@ add_executable(
         huffman.cpp
         huffman.h
         ../tests/huffmanTest.cpp
-        decoder.cpp
-        decoder.h
+        decode.cpp
+        decode.h
 )

@@ -25,7 +25,7 @@ TEST_CASE("Build treap") {
     }
 }
 
-TEST_CASE("Utility And RefactoringTest test") {
+TEST_CASE("Utility, RefactoringTest, Recover test") {
     utility_types::ByteMappingTable sample_bmt;
     sample_bmt.fill(utility_types::VariableLenghCode(0, 0));
     sample_bmt['A'] = utility_types::VariableLenghCode(0b11, 2);
@@ -33,7 +33,7 @@ TEST_CASE("Utility And RefactoringTest test") {
     sample_bmt['C'] = utility_types::VariableLenghCode(0b101, 3);
     sample_bmt['D'] = utility_types::VariableLenghCode(0b001, 3);
     auto order = huffman::GetIndexOrderByCanonical(sample_bmt);
-    std::vector<size_t> req_order = {'B', 'A', 'D', 'C'};
+    std::vector<utility_types::PaddedByte> req_order = {'B', 'A', 'D', 'C'};
     REQUIRE(order == req_order);
 
     utility_types::MappingTableInfo info = utility_bit::GetMappingTableInfo(sample_bmt);
@@ -47,4 +47,14 @@ TEST_CASE("Utility And RefactoringTest test") {
     REQUIRE(sample_bmt['A'] == utility_types::VariableLenghCode{0b01, 2});
     REQUIRE(sample_bmt['D'] == utility_types::VariableLenghCode{0b011, 3});
     REQUIRE(sample_bmt['C'] == utility_types::VariableLenghCode{0b111, 3});
+
+    Treap tr1;
+    huffman::RestoreTreapByInfo(info, order, tr1);
+    auto map_table = tr1.GetMappingTable();
+
+    REQUIRE(map_table['B'] == utility_types::VariableLenghCode{0b0, 1});
+    REQUIRE(map_table['A'] == utility_types::VariableLenghCode{0b01, 2});
+    REQUIRE(map_table['D'] == utility_types::VariableLenghCode{0b011, 3});
+    REQUIRE(map_table['C'] == utility_types::VariableLenghCode{0b111, 3});
 }
+

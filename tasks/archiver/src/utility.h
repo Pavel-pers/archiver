@@ -6,11 +6,17 @@
 #include <vector>
 
 
-enum SpecialSymbols {
+enum SpecialSymbols: uint16_t {
     FILENAME_END = 256,
     ONE_MORE_FILE = 257,
     ARCHIVE_END = 258,
     ALP_POWER = 259
+};
+
+enum DataLimits: size_t {
+    BITS_IN_SYMBOL_COUNT = 9,
+    BITS_IN_LENGH_COUNT = 9,
+    BITS_IN_PADDED_BYTE = 9
 };
 
 namespace utility_types {
@@ -46,6 +52,8 @@ namespace utility_bit {
     char ReverseChar(char c);
 
     utility_types::MappingTableInfo GetMappingTableInfo(utility_types::ByteMappingTable map_table);
+
+    bool IsSpecialSymbol(utility_types::PaddedByte);
 }
 
 

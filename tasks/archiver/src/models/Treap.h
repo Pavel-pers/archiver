@@ -29,19 +29,28 @@ private:
 
 class TreapAutomata {
 public:
-    explicit TreapAutomata(TreapNode *root);
+    TreapAutomata(TreapNode *root, std::vector<utility_types::PaddedByte> pending_bytes); /*
+    connection with automata should close after receiving pending byte */
 
-    bool Feed(uint16_t chank,
-              std::queue<utility_types::PaddedByte> &buffer); // puts to queue values which have found, returns false if path is invalid
+    bool Feed(uint16_t chank, std::queue<utility_types::PaddedByte> &buffer); /*
+    puts to queue values which have found, returns false if path is invalid */
+
+    explicit operator bool() const; /*
+    returns true when found pending byte */
+
 private:
     TreapNode *const start_point_;
     TreapNode *cur_point_;
+    const std::vector<utility_types::PaddedByte> pending_bytes_;
+    bool found_peding_byte_;
 
     bool InTerminalPoint() const;
 };
 
 class Treap {
 public:
+    explicit Treap();
+
     explicit Treap(TreapNode *root);
 
     explicit Treap(
@@ -56,10 +65,11 @@ public:
 
     utility_types::ByteMappingTable GetMappingTable() const;
 
-    TreapAutomata BuildAutomata();
+    TreapAutomata BuildAutomata(std::vector<utility_types::PaddedByte> last_byte_pending);
 
 private:
     TreapNode *const root_;
+    bool found_pending_byte_;
 };
 
 
@@ -74,11 +84,5 @@ namespace treap_utility {
                       utility_types::PaddedByte value);
 
     void FillTableOnSubtreap(TreapNode *root_of_subtreap, utility_types::ByteMappingTable &table,
-                        utility_types::VariableLenghCode scrached_code);
-}
-
-namespace treap_exceptions {
-    class InvalidPathException : std::exception {
-        const char *what() const noexcept override;
-    };
+                             utility_types::VariableLenghCode scrached_code);
 }

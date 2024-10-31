@@ -11,18 +11,18 @@ Encoder::Encoder(const ByteMappingTable &mapping_table, StreamWriter &archive_wr
 
 void Encoder::PrintArchiveHeader() {
     MappingTableInfo map_info = utility_bit::GetMappingTableInfo(mapping_table_);
-    writer_.Write(map_info.symbols_count, BITS_IN_SYMBOL_COUNT);
+    writer_.Write(map_info.symbols_count, DataLimits::BITS_IN_SYMBOL_COUNT);
 
-    std::vector<size_t> ordered_padded_bytes = huffman::GetIndexOrderByCanonical(mapping_table_);
+    std::vector<utility_types::PaddedByte> ordered_padded_bytes = huffman::GetIndexOrderByCanonical(mapping_table_);
     for (size_t byte : ordered_padded_bytes) {
-        writer_.Write(byte, BITS_IN_PADDED_BYTE);
+        writer_.Write(byte, DataLimits::BITS_IN_PADDED_BYTE);
     }
 
     {
         CodeLengh cur_lengh = 1;
         BitCode summary_codes_out = 0;
         while (summary_codes_out < map_info.symbols_count) {
-            writer_.Write(map_info.lengh_count[cur_lengh], BITS_IN_LENGH_COUNT);
+            writer_.Write(map_info.lengh_count[cur_lengh], DataLimits::BITS_IN_LENGH_COUNT);
             summary_codes_out += map_info.lengh_count[cur_lengh];
             cur_lengh++;
         }

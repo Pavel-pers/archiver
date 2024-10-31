@@ -23,3 +23,8 @@ class FileFormatException: public FileException {
 public:
     explicit FileFormatException(const char* file_name = "");
 };
+
+class InvalidArchiveException: public FileException {
+public:
+    explicit InvalidArchiveException(const char* file_name = "");
+};

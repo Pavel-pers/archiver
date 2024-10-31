@@ -1,11 +1,16 @@
 #include "Treap.h"
 
-TreapNode::TreapNode(uint8_t byte) : value_(byte), ej_{nullptr, nullptr} {}
+using utility_types::ByteFrequancy, utility_types::ByteMappingTable, utility_types::CodeLengh, utility_types::BitCode, utility_types::PaddedByte;
+using utility_types::VariableLenghCode;
+using utility_types::MappingTableInfo;
 
-TreapNode::TreapNode(TreapNode *left_child, TreapNode *right_child) : value_(
-        std::min(left_child->value_, right_child->value_)), ej_{left_child, right_child} {}
 
-uint8_t TreapNode::GetValue() const {
+TreapNode::TreapNode(PaddedByte byte) : value_(byte), ej_{nullptr, nullptr} {}
+
+TreapNode::TreapNode(TreapNode *left_child, TreapNode *right_child) :
+        value_(std::min(left_child->value_, right_child->value_)), ej_{left_child, right_child} {}
+
+PaddedByte TreapNode::GetValue() const {
     return value_;
 }
 
@@ -17,7 +22,7 @@ bool TreapNode::IsLeaf() const {
     return !(ej_[treap_utility::LEFT_NODE_CHILD] || ej_[treap_utility::RIGHT_NODE_CHILD]);
 }
 
-void TreapNode::SetValue(uint8_t value) {
+void TreapNode::SetValue(PaddedByte value) {
     value_ = value;
 }
 
@@ -29,13 +34,13 @@ void TreapNode::SetChild(bool bit, TreapNode *child) {
 }
 
 
-TreapAutomata::TreapAutomata(TreapNode *root): start_point_(root), cur_point_(root) {}
+TreapAutomata::TreapAutomata(TreapNode *root) : start_point_(root), cur_point_(root) {}
 
 bool TreapAutomata::InTerminalPoint() const {
     return cur_point_->IsLeaf();
 }
 
-bool TreapAutomata::Feed(uint16_t chank, std::queue<uint8_t>& buffer) {
+bool TreapAutomata::Feed(uint16_t chank, std::queue<PaddedByte> &buffer) {
     for (uint8_t i = sizeof(uint16_t) * CHAR_BIT; i--;) {
         if (cur_point_->GetChild(chank & 1) == nullptr) {
             return false;
@@ -43,7 +48,7 @@ bool TreapAutomata::Feed(uint16_t chank, std::queue<uint8_t>& buffer) {
         cur_point_ = cur_point_->GetChild(chank & 1);
         chank >>= 1;
         if (InTerminalPoint()) {
-            uint8_t found_value = cur_point_->GetValue();
+            PaddedByte found_value = cur_point_->GetValue();
             cur_point_ = start_point_;
             buffer.push(found_value);
         }
@@ -54,11 +59,10 @@ bool TreapAutomata::Feed(uint16_t chank, std::queue<uint8_t>& buffer) {
 
 Treap::Treap(TreapNode *root) : root_(root) {}
 
-Treap::Treap(std::vector<std::pair<std::pair<uint16_t, uint8_t>, uint8_t>> code_to_word_mapping) :
-    root_(new TreapNode(std::numeric_limits<uint8_t>::max())) {
-    for (auto [word_info, value]: code_to_word_mapping) {
-        auto [word, word_size] = word_info;
-        AddWord(word, word_size, value);
+Treap::Treap(std::vector<std::pair<VariableLenghCode, PaddedByte>> code_to_word_mapping) :
+        root_(new TreapNode(std::numeric_limits<PaddedByte>::max())) {
+    for (auto [code, value]: code_to_word_mapping) {
+        AddWord(code, value);
     }
 }
 
@@ -66,18 +70,18 @@ Treap::~Treap() {
     treap_utility::DeleteSubtreap(root_);
 }
 
-void Treap::AddWord(uint16_t word, size_t word_size, uint8_t value) {
-    treap_utility::AddWordToSubtreap(root_, word, word_size, value);
+void Treap::AddWord(VariableLenghCode code, PaddedByte value) {
+    treap_utility::AddWordToSubtreap(root_, code, value);
 }
 
-treap_utility::MappingTable Treap::GetMappingTable() const {
-    treap_utility::MappingTable mapping_table;
-    mapping_table.fill({0, 0});
-    treap_utility::FillTableOnSubtreap(root_, mapping_table, 0, 0);
+ByteMappingTable Treap::GetMappingTable() const {
+    ByteMappingTable mapping_table;
+    mapping_table.fill(VariableLenghCode(0, 0));
+    treap_utility::FillTableOnSubtreap(root_, mapping_table, VariableLenghCode(0, 0));
     return mapping_table;
 }
 
-TreapAutomata Treap::buildAutomata() {
+TreapAutomata Treap::BuildAutomata() {
     return TreapAutomata(root_);
 }
 
@@ -92,33 +96,33 @@ namespace treap_utility {
         }
     }
 
-    void AddWordToSubtreap(TreapNode *root_of_subtreap, uint16_t word, size_t word_size, uint8_t value) {
+    void AddWordToSubtreap(TreapNode *root_of_subtreap, VariableLenghCode code, PaddedByte value) {
         root_of_subtreap->SetValue(std::min(root_of_subtreap->GetValue(), value));
 
-        if (!root_of_subtreap->GetChild(word & 1)) {
-            root_of_subtreap->SetChild(word & 1, new TreapNode(value));
+        if (!root_of_subtreap->GetChild(code.code & 1)) {
+            root_of_subtreap->SetChild(code.code & 1, new TreapNode(value));
         }
 
-        if (word_size > 1) {
-            AddWordToSubtreap(root_of_subtreap->GetChild(word & 1), word >> 1, word_size - 1, value);
+        if (code.lengh > 1) {
+            VariableLenghCode next_code(code.code >> 1, code.lengh - 1); // TODO delete this shit
+            AddWordToSubtreap(root_of_subtreap->GetChild(code.code & 1), next_code, value);
         }
     }
 
     void
-    FillTableOnSubtreap(TreapNode *root_of_subtreap, MappingTable &table,
-                        uint16_t scratched_word, uint8_t scratched_word_size) {
+    FillTableOnSubtreap(TreapNode *root_of_subtreap, ByteMappingTable &table, VariableLenghCode scrached_word) {
         if (root_of_subtreap->IsLeaf()) {
-            table[root_of_subtreap->GetValue()] = std::make_pair(scratched_word, scratched_word_size);
+            table[root_of_subtreap->GetValue()] = scrached_word;
             return;
         }
 
         if (root_of_subtreap->GetChild(LEFT_NODE_CHILD)) {
-            FillTableOnSubtreap(root_of_subtreap->GetChild(LEFT_NODE_CHILD), table,
-                                scratched_word, scratched_word_size + 1);
+            VariableLenghCode next_code(scrached_word.code, scrached_word.lengh + 1);
+            FillTableOnSubtreap(root_of_subtreap->GetChild(LEFT_NODE_CHILD), table, next_code);
         }
         if (root_of_subtreap->GetChild(RIGHT_NODE_CHILD)) {
-            FillTableOnSubtreap(root_of_subtreap->GetChild(RIGHT_NODE_CHILD), table,
-                                scratched_word | (1 << scratched_word_size), scratched_word_size + 1);
+            VariableLenghCode   next_code(scrached_word.code | (1 << scrached_word.lengh), scrached_word.lengh + 1);
+            FillTableOnSubtreap(root_of_subtreap->GetChild(RIGHT_NODE_CHILD), table, next_code);
         }
     }
 }

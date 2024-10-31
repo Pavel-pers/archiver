@@ -38,6 +38,7 @@ TEST_CASE("Exceptions2") {
 TEST_CASE("Simple Dimple") {
     const char *arg1[5] = {"fn", "-c", "arch", "file1", "file2"};
     ArchiverArgs aa1(5, arg1);
+    REQUIRE(aa1.GetFlag() == args::LaunchFlag::COMPRESS);
     REQUIRE(strcmp(aa1.GetCompressParams().archive_name, "arch") == 0);
     REQUIRE(aa1.GetCompressParams().files.size() == 2);
     REQUIRE(strcmp(aa1.GetCompressParams().files[0], "file1") == 0);
@@ -45,5 +46,10 @@ TEST_CASE("Simple Dimple") {
 
     const char *arg2[3] = {"fn", "-d", "arch2"};
     ArchiverArgs aa2(3, arg2);
+    REQUIRE(aa2.GetFlag() == args::LaunchFlag::DECOMPRESS);
     REQUIRE(strcmp(aa2.GetDecompressParams().archive_name, "arch2") == 0);
+
+    const char *arg3[2] = {"fn", "-h"};
+    ArchiverArgs aa3(2, arg3);
+    REQUIRE(aa3.GetFlag() == args::LaunchFlag::HELP);
 }

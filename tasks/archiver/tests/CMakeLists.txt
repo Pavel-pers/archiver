@@ -21,6 +21,12 @@ add_catch(test_Treap
         ../src/utility.cpp
         ../src/models/Treap.cpp
 )
+add_catch(test_Huffman
+        huffmanTest.cpp
+        ../src/utility.cpp
+        ../src/models/Treap.cpp
+        ../src/huffman.cpp
+)
 
 #add_custom_target(
 #        test_archiver

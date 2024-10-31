@@ -1,11 +1,13 @@
 #include <ostream>
 #include <cstdint>
+#include "../utility.h"
 
 class StreamWriter{
 public:
     explicit StreamWriter(std::ostream& out);
     void WriteFast(uint8_t chank, size_t size);
     void Write(uint16_t chank, size_t size);
+    void Write(utility_types::VariableLenghCode code);
     void Close();
 private:
     using BlockSizeT = uint8_t;

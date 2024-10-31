@@ -1,6 +1,5 @@
 #include "StreamWriter.h"
 #include "exceptions/FileExceptions.h"
-#include "../utility.h"
 
 StreamWriter::StreamWriter(std::ostream &out): bit_index_(0), out_stream_(out) {
     std::fill(buffered_, buffered_ + BUFFER_MAX_SIZE, 0);
@@ -64,6 +63,10 @@ void StreamWriter::Write(uint16_t chank, size_t size) {
     } else {
         WriteFast(static_cast<uint8_t>(chank), size);
     }
+}
+
+void StreamWriter::Write(utility_types::VariableLenghCode code) {
+    Write(code.code, code.lengh);
 }
 
 

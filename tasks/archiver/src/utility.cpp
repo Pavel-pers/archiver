@@ -1,5 +1,9 @@
 #include "utility.h"
 
+bool utility_types::operator==(utility_types::VariableLenghCode lhs, utility_types::VariableLenghCode rhs) {
+    return lhs.lengh == rhs.lengh && lhs.code == rhs.code;
+}
+
 namespace utility_bit {
     uint8_t ReverseChar(uint8_t c) {
         static const uint8_t REVERSE_MAPPING[] = {
@@ -28,7 +32,23 @@ namespace utility_bit {
         };
         return REVERSE_MAPPING[c];
     }
+
     char ReverseChar(char c) {
         return static_cast<char>(ReverseChar(static_cast<uint8_t>(c)));
+    }
+
+    utility_types::MappingTableInfo GetMappingTableInfo(utility_types::ByteMappingTable map_table) {
+        utility_types::MappingTableInfo info;
+        info.symbols_count = 0;
+        info.lengh_count.fill(0);
+
+        for (utility_types::VariableLenghCode i : map_table) {
+            if (i.lengh > 0) {
+                info.symbols_count++;
+                info.lengh_count[i.lengh]++;
+            }
+        }
+
+        return info;
     }
 }

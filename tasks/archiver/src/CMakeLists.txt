@@ -21,4 +21,12 @@ add_executable(
         models/Treap.cpp
         models/Treap.h
         ../tests/treapTest.cpp
+        encode.cpp
+        encode.h
+        huffman.cpp
+        huffman.cpp
+        huffman.h
+        ../tests/huffmanTest.cpp
+        decoder.cpp
+        decoder.h
 )

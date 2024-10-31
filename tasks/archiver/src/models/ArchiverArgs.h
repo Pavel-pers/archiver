@@ -32,6 +32,8 @@ public:
 
     DecompressParams GetDecompressParams() const;
 
+    args::LaunchFlag GetFlag() const;
+
 private:
     void CompressHandler(const std::vector<const char *> &params);
 

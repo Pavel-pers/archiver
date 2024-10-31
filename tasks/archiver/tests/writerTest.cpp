@@ -4,7 +4,6 @@
 #include <sstream>
 #include <bitset>
 #include "../src/models/StreamWriter.h"
-#include "../src/utility.h"
 #include "../src/models/exceptions/FileExceptions.h"
 
 

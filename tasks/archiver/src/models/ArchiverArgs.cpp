@@ -82,3 +82,7 @@ CompressParams ArchiverArgs::GetCompressParams() const {
     auto files_to_compress = std::vector<const char *>(opt_info_.begin() + 1, opt_info_.end());
     return CompressParams(file_name, files_to_compress);
 }
+
+args::LaunchFlag ArchiverArgs::GetFlag() const {
+    return launch_flag_;
+}

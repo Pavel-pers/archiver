@@ -6,7 +6,8 @@ namespace args {
     enum class LaunchFlag {
         COMPRESS,
         DECOMPRESS,
-        HELP
+        HELP,
+        UNDEFINED
     };
 }
 
@@ -26,7 +27,10 @@ struct DecompressParams {
 
 class ArchiverArgs : private LaunchArgs {
 public:
+    ArchiverArgs(): launch_flag_(args::LaunchFlag::UNDEFINED) {};
     ArchiverArgs(const int, const char **);
+
+    void InitArgs(const int, const char **) override;
 
     CompressParams GetCompressParams() const;
 

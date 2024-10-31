@@ -6,8 +6,8 @@
 
 class Decoder{
 public:
-    Decoder(StreamReader& reader);
-
+    explicit Decoder(StreamReader& reader);
+    void InitHeaderInfo();
     bool EndOfArchive() const;
     std::string ParseFileName();
     void UnpackFile(StreamWriter& writer);

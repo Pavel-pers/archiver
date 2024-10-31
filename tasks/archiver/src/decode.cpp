@@ -7,7 +7,9 @@ using utility_types::VariableLenghCode;
 using utility_types::MappingTableInfo;
 
 
-Decoder::Decoder(StreamReader &reader) : reader_(reader), archive_finish_(false) {
+Decoder::Decoder(StreamReader &reader) : reader_(reader), archive_finish_(false) {}
+
+void Decoder::InitHeaderInfo() {
     auto [map_info, ordered_bytes] = ParseHeaderInfo();
     huffman::RestoreTreapByInfo(map_info, ordered_bytes, code_treap_);
 }
@@ -112,3 +114,4 @@ void Decoder::ProcessBufferUnpackFile(StreamWriter &writer) {
 bool Decoder::EndOfArchive() const {
     return archive_finish_;
 }
+

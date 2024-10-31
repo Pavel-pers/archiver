@@ -39,7 +39,9 @@ void ArchiverArgs::HelpHandler(const std::vector<const char *> &params) {
 }
 
 
-ArchiverArgs::ArchiverArgs(const int argc, const char **argv) : LaunchArgs(argc, argv) {
+void ArchiverArgs::InitArgs(const int argc, const char **argv) {
+    LaunchArgs::InitArgs(argc, argv);
+
     const auto &[flags, fflags] = GetFlags();
     const std::vector<const char *> &params = GetParams();
 
@@ -48,10 +50,10 @@ ArchiverArgs::ArchiverArgs(const int argc, const char **argv) : LaunchArgs(argc,
     }
 
     if (flags.size() > 1) {
-        throw ArgsRuntimeException("more then one flag");
+        throw ArgsRuntimeException("more then one flag", flags[1]);
     }
     if (flags.empty()) {
-        throw ArgsRuntimeException("unexpected non empty flag list, check -h");
+        throw ArgsRuntimeException("unexpected empty flag list, check -h");
     }
 
     if (std::strcmp(flags[0], "-c") == 0) {
@@ -61,8 +63,12 @@ ArchiverArgs::ArchiverArgs(const int argc, const char **argv) : LaunchArgs(argc,
     } else if (std::strcmp(flags[0], "-h") == 0) {
         HelpHandler(params);
     } else {
-        throw ArgsRuntimeException("uncknown flag, check -h");
+        throw ArgsRuntimeException("unknown flag, check -h", flags[0]);
     }
+}
+
+ArchiverArgs::ArchiverArgs(const int argc, const char **argv) {
+    InitArgs(argc, argv);
 }
 
 DecompressParams ArchiverArgs::GetDecompressParams() const {

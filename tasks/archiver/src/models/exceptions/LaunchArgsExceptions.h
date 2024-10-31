@@ -10,6 +10,9 @@ public:
 class ArgsRuntimeException: public std::runtime_error {
 public:
     explicit ArgsRuntimeException(const char* message, const char* invalid_arg = "");
+    const char* GetInvalidArgument();
+private:
+    const char* invalid_arg_;
 };
 
 

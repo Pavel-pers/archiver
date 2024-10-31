@@ -5,9 +5,7 @@ using utility_types::VariableLenghCode;
 using utility_types::MappingTableInfo;
 
 Encoder::Encoder(const ByteMappingTable &mapping_table, StreamWriter &archive_writer) :
-        mapping_table_(mapping_table), writer_(archive_writer), already_print_any_file_(false) {
-    PrintArchiveHeader();
-}
+        mapping_table_(mapping_table), writer_(archive_writer), already_print_any_file_(false) {}
 
 void Encoder::PrintArchiveHeader() {
     MappingTableInfo map_info = utility_bit::GetMappingTableInfo(mapping_table_);
@@ -30,8 +28,8 @@ void Encoder::PrintArchiveHeader() {
 }
 
 
-void Encoder::PrintFileHeader(char *file_name) {
-    for (char *byte_pointer = file_name; byte_pointer; byte_pointer++) {
+void Encoder::PrintFileHeader(const char *file_name) {
+    for (const char *byte_pointer = file_name; byte_pointer; byte_pointer++) {
         uint8_t byte = *byte_pointer;
         writer_.Write(mapping_table_[byte]);
     }
@@ -44,7 +42,7 @@ void Encoder::PrintFileBody(StreamReader &file_to_archive) {
     }
 }
 
-void Encoder::PrintFile(char *file_name, StreamReader &file_reader) {
+void Encoder::PrintFile(const char *file_name, StreamReader &file_reader) {
     if (already_print_any_file_) {
         PrintOneMoreFileSymbol();
     }

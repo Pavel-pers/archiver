@@ -3,7 +3,6 @@
 #include <iostream>
 #include <sstream>
 #include "../src/models/StreamReader.h"
-#include "../src/utility.h"
 #include "../src/models/exceptions/FileExceptions.h"
 
 

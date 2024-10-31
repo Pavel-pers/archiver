@@ -1,9 +1,7 @@
 #include "StreamReader.h"
 #include "exceptions/FileExceptions.h"
 
-StreamReader::StreamReader(std::istream &in) : in_stream_(in), bit_index_(0) {
-    FlushBuffer();
-}
+StreamReader::StreamReader(std::istream &in) : in_stream_(in), bit_index_(CHAR_BIT * MAX_BUFFER_SIZE) {}
 
 void StreamReader::FlushBuffer() {
     if (in_stream_.bad()) {

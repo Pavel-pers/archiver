@@ -24,6 +24,7 @@ private:
 };
 
 class FilesByteFrequancy {
+public:
     void ScanFile(StreamReader& reader);
     utility_types::ByteFrequancy GetSummaryFrequancy() const;
 private:

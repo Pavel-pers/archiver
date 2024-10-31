@@ -5,6 +5,9 @@
 class LaunchArgs {
 public:
     LaunchArgs(const int argc, const char** argv);
+    LaunchArgs(): run_name_(nullptr) {}
+
+    virtual void InitArgs(const int argc, const char** argv);
     const std::pair<std::vector<const char*>&, std::vector<const char*>&> GetFlags();
     const std::vector<const char*>& GetParams();
 private:
@@ -13,5 +16,3 @@ private:
     std::vector<const char*> fflags_;
     std::vector<const char*> params_;
 };
-// TODO add params to flags
-// TODO char** should't use with non const size?

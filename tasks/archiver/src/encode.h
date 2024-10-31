@@ -11,16 +11,17 @@ public:
 
     void PrintEof();
 
-    void PrintFile(char *file_name, StreamReader &file_reader);
+    void PrintFile(const char *file_name, StreamReader &file_reader);
+
+    void PrintArchiveHeader();
 
 private:
     const utility_types::ByteMappingTable &mapping_table_;
     StreamWriter &writer_;
     bool already_print_any_file_;
 
-    void PrintArchiveHeader();
 
-    void PrintFileHeader(char *file_name);
+    void PrintFileHeader(const char *file_name);
 
     void PrintFileBody(StreamReader &file_to_archive);
 
